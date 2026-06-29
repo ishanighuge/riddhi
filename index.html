@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Riddhi ❤️</title>
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+    
+    <style>
+        :root {
+            /* Light Theme - Soft Blush Gradient */
+            --bg-gradient: linear-gradient(135deg, #fdf2f4 0%, #fad0c4 100%);
+            --glass-bg: rgba(255, 255, 255, 0.4);
+            --glass-border: rgba(255, 255, 255, 0.6);
+            --text-main: #333333;
+            --text-muted: #555555;
+            --accent: #ff4d6d;
+            --btn-text: #ffffff;
+        }
+
+        [data-theme="dark"] {
+            /* Dark Theme */
+            --bg-gradient: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            --glass-bg: rgba(15, 15, 15, 0.4);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-main: #f5f5f5;
+            --text-muted: #cccccc;
+            --accent: #ff4d6d;
+        }
+
+        * {
+            box-sizing: border-box;
+            transition: background 0.5s ease, color 0.5s ease;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            /* Apple-inspired San Francisco Font Stack */
+            font-family: -apple-system, BlinkMacSystemFont, "San Francisco", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: var(--text-main);
+            /* Heart Cursor */
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="%23ff4d6d" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>') 12 12, auto;
+            overflow-x: hidden;
+        }
+
+        /* Envelope Overlay */
+        #envelope-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg-gradient);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 1s ease, transform 1s ease;
+        }
+
+        .envelope {
+            width: 300px;
+            height: 200px;
+            background: rgba(255,255,255,0.8);
+            border-radius: 10px;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+            animation: bounce 2s infinite ease-in-out;
+        }
+        
+        .envelope::before {
+            content: 'Tap to open 💌';
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Floating Elements Container */
+        #floating-container {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .floating-item {
+            position: absolute;
+            opacity: 0.6;
+            animation: float-up linear infinite;
+        }
+
+        @keyframes float-up {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            20% { opacity: 0.8; }
+            80% { opacity: 0.8; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* Controls - Fixed z-index so it never disappears */
+        .controls {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999; 
+            display: flex;
+            gap: 15px;
+        }
+
+        .icon-btn {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            color: var(--text-main);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+        }
+
+        .icon-btn:hover {
+            transform: scale(1.1);
+        }
+
+        /* Main Content - Glassmorphism */
+        .main-container {
+            position: relative;
+            z-index: 10;
+            max-width: 700px;
+            margin: 80px auto 40px auto;
+            padding: 40px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1s ease, transform 1s ease;
+            display: none;
+        }
+
+        .main-container.show {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Typography */
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 30px;
+            color: var(--accent);
+            min-height: 50px;
+        }
+
+        p {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            margin-bottom: 25px;
+            color: var(--text-muted);
+            letter-spacing: 0.2px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        p.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Carousel Fixes */
+        .swiper {
+            width: 280px; /* Fixed width so cards stack correctly */
+            height: 380px;
+            margin: 40px auto;
+            padding-top: 20px;
+            padding-bottom: 50px;
+        }
+
+        .swiper-slide {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 20px;
+            background: #fff;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+
+        .swiper-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 20px;
+        }
+
+        /* Forgive Me Button */
+        .action-container {
+            text-align: center;
+            margin-top: 50px;
+            opacity: 0;
+            transition: opacity 1s ease 2s; /* Delayed appearance */
+        }
+
+        .action-container.visible {
+            opacity: 1;
+        }
+
+        .forgive-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(255, 77, 109, 0.3);
+            transition: transform 0.3s, box-shadow 0.3s;
+            font-family: inherit;
+        }
+
+        .forgive-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 15px 25px rgba(255, 77, 109, 0.4);
+        }
+
+        #final-message {
+            display: none;
+            text-align: center;
+            font-size: 1.5rem;
+            color: var(--accent);
+            font-weight: bold;
+            margin-top: 20px;
+            animation: fadeIn 1s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-container {
+                margin: 70px 20px 40px 20px; /* Pushed down slightly so buttons don't block text */
+                padding: 30px 20px;
+            }
+            h1 { font-size: 2rem; }
+            p { font-size: 1.05rem; }
+            
+            /* Keeps controls perfectly placed and sized on mobile */
+            .controls {
+                top: 15px;
+                right: 15px;
+                gap: 10px;
+                transform: scale(0.9);
+                transform-origin: top right;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bg-music" loop>
+        <source src="song.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="floating-container"></div>
+
+    <div class="controls">
+        <button class="icon-btn" id="mute-btn" title="Toggle Music">🎵</button>
+        <button class="icon-btn" id="theme-btn" title="Toggle Dark/Light Mode">🌙</button>
+    </div>
+
+    <div id="envelope-screen">
+        <div class="envelope" id="envelope" title="Click to open"></div>
+    </div>
+
+    <div class="main-container" id="main-content">
+        <h1 id="typewriter-title"></h1>
+
+        <div class="letter-content">
+            <p class="scroll-anim">I've been thinking about what happened, and I'm really sorry. That joke about you not having friends was stupid, disrespectful, and I completely understand why it hurt you. I never wanted to make you feel like I don't value you.</p>
+            
+            <p class="scroll-anim">I also have this feeling that maybe you think I'm trying to act like Neel or become all cool and nonchalant towards you, and I just want to say that's not true at all. I don't want you to think I'm changing or trying to impress anyone by treating you differently. If anything, you're one of the people whose opinion matters to me the most.</p>
+            
+            <div class="swiper mySwiper scroll-anim">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide"><img src="rg1.jpeg" alt="Memory 1"></div>
+                    <div class="swiper-slide"><img src="rg2.jpeg" alt="Memory 1"></div>
+                    <div class="swiper-slide"><img src="rg3.jpeg" alt="Memory 1"></div>
+                    <div class="swiper-slide"><img src="rg4.jpeg" alt="Memory 1"></div>
+                    <div class="swiper-slide"><img src="rg5.jpeg" alt="Memory 1"></div>
+                    <div class="swiper-slide"><img src="rg6.jpeg" alt="Memory 1"></div>
+                    <div class="swiper-slide"><img src="rg7.jpeg" alt="Memory 1"></div>
+                    <div class="swiper-slide"><img src="rg8.jpeg" alt="Memory 1"></div>
+                </div>
+                <div class="swiper-pagination"></div>
+            </div>
+
+            <p class="scroll-anim">I know I have this really toxic love language where I make fun of the people I'm closest to. It's something I need to work on because I realize that even if I don't mean it, it can genuinely hurt the people I care about. That's on me, and I'm sorry.</p>
+            
+            <p class="scroll-anim">And for what it's worth, the only friend I've ever wanted and needed is you. I know that sounds cheesy, but it's true. You're genuinely such an important part of my life, and I'd never intentionally make you feel like you're not enough or that I don't care.</p>
+            
+            <p class="scroll-anim">I'm not asking you to forgive me immediately because I know I messed up. I just hope you know that I care about you deeply, and I'm going to work on not making these kinds of jokes again. You deserve better from me.</p>
+            
+            <p class="scroll-anim" style="font-weight: 600; font-size: 1.3rem; margin-top: 40px;">I miss you, baby❤️</p>
+        </div>
+
+        <div class="action-container" id="action-container">
+            <button class="forgive-btn" id="forgive-btn">Forgive Me ❤️</button>
+            <div id="final-message">Thank you for being my everything. 💞</div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script>
+        // Floating Hearts and Sakura Petals Generator
+        const container = document.getElementById('floating-container');
+        const elements = ['🌸', '❤️', '💖', '💮'];
+        
+        function createFloatingElement() {
+            const el = document.createElement('div');
+            el.classList.add('floating-item');
+            el.innerText = elements[Math.floor(Math.random() * elements.length)];
+            el.style.left = Math.random() * 100 + 'vw';
+            el.style.animationDuration = (Math.random() * 5 + 5) + 's';
+            el.style.fontSize = (Math.random() * 15 + 10) + 'px';
+            container.appendChild(el);
+
+            setTimeout(() => {
+                el.remove();
+            }, 10000);
+        }
+        setInterval(createFloatingElement, 500);
+
+        // Dark/Light Theme Toggle
+        const themeBtn = document.getElementById('theme-btn');
+        let isDark = false;
+        themeBtn.addEventListener('click', () => {
+            isDark = !isDark;
+            document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+            themeBtn.innerText = isDark ? '☀️' : '🌙';
+        });
+
+        // Audio Toggle
+        const music = document.getElementById('bg-music');
+        const muteBtn = document.getElementById('mute-btn');
+        let isPlaying = false;
+        
+        muteBtn.addEventListener('click', () => {
+            if (isPlaying) {
+                music.pause();
+                muteBtn.innerText = '🔇';
+            } else {
+                music.play();
+                muteBtn.innerText = '🎵';
+            }
+            isPlaying = !isPlaying;
+        });
+
+        // Envelope Opening, Typewriter & Swiper Initialization
+        const envelopeScreen = document.getElementById('envelope-screen');
+        const envelope = document.getElementById('envelope');
+        const mainContent = document.getElementById('main-content');
+        const titleEl = document.getElementById('typewriter-title');
+        const titleText = "Riddhi,";
+
+        envelope.addEventListener('click', () => {
+            // Start music automatically if allowed by browser
+            music.play().then(() => { isPlaying = true; }).catch(e => { muteBtn.innerText = '🔇'; });
+            
+            envelopeScreen.style.transform = 'scale(1.5)';
+            envelopeScreen.style.opacity = '0';
+            
+            setTimeout(() => {
+                envelopeScreen.style.display = 'none';
+                mainContent.classList.add('show');
+                
+                // Initialize Swiper ONLY AFTER the container is visible to fix the zero-width bug
+                const swiper = new Swiper('.mySwiper', {
+                    effect: "cards",
+                    grabCursor: true,
+                    pagination: {
+                        el: ".swiper-pagination",
+                        dynamicBullets: true,
+                    },
+                    autoplay: {
+                        delay: 2500,
+                        disableOnInteraction: false,
+                    },
+                });
+
+                typeWriter();
+                observeScroll();
+            }, 1000);
+        });
+
+        // Typewriter Animation
+        let i = 0;
+        function typeWriter() {
+            if (i < titleText.length) {
+                titleEl.innerHTML += titleText.charAt(i);
+                i++;
+                setTimeout(typeWriter, 150);
+            } else {
+                // Show final button after typing is done
+                document.getElementById('action-container').classList.add('visible');
+            }
+        }
+
+        // Smooth Scroll Animation (Intersection Observer)
+        function observeScroll() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.scroll-anim').forEach((el) => {
+                observer.observe(el);
+            });
+        }
+
+        // Confetti Ending
+        const forgiveBtn = document.getElementById('forgive-btn');
+        const finalMessage = document.getElementById('final-message');
+        
+        forgiveBtn.addEventListener('click', () => {
+            // Trigger Confetti
+            var duration = 3 * 1000;
+            var animationEnd = Date.now() + duration;
+            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+            function randomInRange(min, max) {
+              return Math.random() * (max - min) + min;
+            }
+
+            var interval = setInterval(function() {
+              var timeLeft = animationEnd - Date.now();
+
+              if (timeLeft <= 0) {
+                return clearInterval(interval);
+              }
+
+              var particleCount = 50 * (timeLeft / duration);
+              confetti(Object.assign({}, defaults, { particleCount,
+                origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 }
+              }));
+              confetti(Object.assign({}, defaults, { particleCount,
+                origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }
+              }));
+            }, 250);
+
+            // Change UI
+            forgiveBtn.style.display = 'none';
+            finalMessage.style.display = 'block';
+        });
+    </script>
+</body>
+</html>
